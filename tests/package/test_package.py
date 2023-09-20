@@ -14,8 +14,8 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-from case_cli_example import foo
+from case_macos_system_profiler import suffixed_bytes_number_to_integer
 
 
 def test_package() -> None:
-    assert foo() == "x"
+    assert suffixed_bytes_number_to_integer("32 GB") == 34359738368

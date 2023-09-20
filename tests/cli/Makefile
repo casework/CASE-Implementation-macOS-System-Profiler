@@ -19,15 +19,42 @@ SHELL := /bin/bash
 top_srcdir := $(shell cd ../.. ; pwd)
 
 all: \
-  example_output.jsonld \
-  example_output.rdf \
-  example_output.ttl \
-  example_output_debug.jsonld \
-  example_output_debug.rdf \
-  example_output_debug.ttl
+  SPHardwareDataType.ttl
 
 .PHONY: \
   check-pytest
+
+EXAMPLE-system_profiler-SPHardwareDataType.json:
+	@echo "ERROR:$@ not found.  To avoid accidental commits of device-identifying information, please modify this Makefile to remove the following, halting 'exit'; run 'make' again; and carefully review and/or sanitize the generated JSON file before committing." >&2
+	exit 1
+	rm -f _$@ __$@
+	system_profiler \
+	  -detailLevel full \
+	  -json \
+	  SPHardwareDataType \
+	  > __$@
+	python3 -m json.tool \
+	  __$@ \
+	  _$@
+	rm __$@
+	mv _$@ $@
+
+SPHardwareDataType.ttl: \
+  EXAMPLE-system_profiler-SPHardwareDataType.json \
+  $(top_srcdir)/case_macos_system_profiler/__init__.py \
+  $(top_srcdir)/case_macos_system_profiler/cli.py \
+  $(top_srcdir)/tests/.venv.done.log
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
+	  && source $(top_srcdir)/tests/venv/bin/activate \
+	    && case_macos_system_profiler \
+	      --SPHardwareDataType-json $< \
+	      --use-deterministic-uuids \
+	      _$@
+	source $(top_srcdir)/tests/venv/bin/activate \
+	  && case_validate \
+	    --allow-infos \
+	    _$@
+	mv _$@ $@
 
 check: \
   check-pytest
@@ -40,32 +67,5 @@ check-pytest: \
 
 clean:
 	@rm -rf \
-	  *.jsonld \
-	  *.rdf \
 	  *.ttl \
 	  .pytest_cache
-
-example_output.%: \
-  $(top_srcdir)/case_cli_example/cli.py \
-  $(top_srcdir)/tests/.venv.done.log
-	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
-	  && source $(top_srcdir)/tests/venv/bin/activate \
-	    && case_cli_example \
-	      _$@
-	source $(top_srcdir)/tests/venv/bin/activate \
-	  && case_validate \
-	    _$@
-	mv _$@ $@
-
-example_output_debug.%: \
-  $(top_srcdir)/case_cli_example/cli.py \
-  $(top_srcdir)/tests/.venv.done.log
-	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
-	  && source $(top_srcdir)/tests/venv/bin/activate \
-	    && case_cli_example \
-	      --debug \
-	      _$@
-	source $(top_srcdir)/tests/venv/bin/activate \
-	  && case_validate \
-	    _$@
-	mv _$@ $@

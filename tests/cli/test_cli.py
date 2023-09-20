@@ -17,70 +17,32 @@
 from pathlib import Path
 from typing import Set
 
-import pytest
-from case_utils.namespace import NS_RDF, NS_UCO_IDENTITY
+import case_utils.ontology
 from rdflib import Graph, URIRef
 from rdflib.query import ResultRow
 
 
-@pytest.mark.parametrize(
-    ["filename"],
-    [
-        ("example_output.jsonld",),
-        ("example_output.rdf",),
-        ("example_output.ttl",),
-        ("example_output_debug.jsonld",),
-        ("example_output_debug.rdf",),
-        ("example_output_debug.ttl",),
-    ],
-)
-def test_example_output_with_iterator(filename: str) -> None:
+def test_example_output_with_sparql() -> None:
     srcdir = Path(__file__).parent
     graph = Graph()
-    graph.parse(srcdir / filename)
-    n_organizations: Set[URIRef] = set()
-    for n_subject in graph.subjects(NS_RDF.type, NS_UCO_IDENTITY.Organization):
-        assert isinstance(n_subject, URIRef)
-        n_organizations.add(n_subject)
-    assert len(n_organizations) == 1
+    graph.parse(srcdir / "SPHardwareDataType.ttl")
 
+    # Augment data graph with subclass hierarchy to look for all Devices.
+    case_utils.ontology.load_subclass_hierarchy(graph)
 
-@pytest.mark.parametrize(
-    ["filename"],
-    [
-        ("example_output.jsonld",),
-        ("example_output.rdf",),
-        ("example_output.ttl",),
-        ("example_output_debug.jsonld",),
-        ("example_output_debug.rdf",),
-        ("example_output_debug.ttl",),
-    ],
-)
-def test_example_output_with_sparql(filename: str) -> None:
-    srcdir = Path(__file__).parent
-    graph = Graph()
-    graph.parse(srcdir / filename)
-
-    # This query includes a prefix statement that is typically provided
-    # by the data graph.  However, some graph generators omit prefixes
-    # if they are never referenced in the triples.  In that case,
-    # attempting to run this query without a PREFIX statement would fail
-    # due to an unbound prefix.  While ultimately the test would be
-    # correct in failing, it would fail for a potentially confusing
-    # reason appearing to be a syntax error, rather than a real reason
-    # of the query having no data to find.
     query = """\
-PREFIX uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/>
-SELECT ?nOrganization
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/>
+SELECT ?nDevice
 WHERE {
-  ?nOrganization
-    a uco-identity:Organization ;
+  ?nDevice
+    a/rdfs:subClassOf* uco-observable:Device ;
     .
 }
 """
-    n_organizations: Set[URIRef] = set()
+    n_devices: Set[URIRef] = set()
     for result in graph.query(query):
         assert isinstance(result, ResultRow)
         assert isinstance(result[0], URIRef)
-        n_organizations.add(result[0])
-    assert len(n_organizations) == 1
+        n_devices.add(result[0])
+    assert len(n_devices) == 1

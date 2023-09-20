@@ -1,0 +1,21 @@
+@prefix kb: <http://example.org/kb/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uco-core: <https://ontology.unifiedcyberontology.org/uco/core/> .
+@prefix uco-identity: <https://ontology.unifiedcyberontology.org/uco/identity/> .
+@prefix uco-observable: <https://ontology.unifiedcyberontology.org/uco/observable/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+
+kb:AppleDevice-dca979be-a344-5bcb-8a2d-e207fe5c3098 a uco-observable:AppleDevice,
+        uco-observable:Computer ;
+    uco-core:hasFacet kb:DeviceFacet-cb27d41e-7c34-59d5-bcf4-ddd45890cc52 .
+
+kb:DeviceFacet-cb27d41e-7c34-59d5-bcf4-ddd45890cc52 a uco-observable:DeviceFacet ;
+    rdfs:seeAlso <https://support.apple.com/en-us/HT201300> ;
+    uco-observable:deviceType "MacBook Pro" ;
+    uco-observable:manufacturer wd:Q312 ;
+    uco-observable:model "MacBookPro4,1" ;
+    uco-observable:serialNumber "XXXXXXXXXXX1" .
+
+wd:Q312 a uco-identity:Organization ;
+    rdfs:label "Apple Computer, Inc."@en .
+

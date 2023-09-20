@@ -14,20 +14,20 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-# TODO - Adapt below.
-
-"""
-case_cli_example is a command that demonstrates making a CLI application tested with a Make-based workflow.
-"""
-
 __version__ = "0.0.1"
 
 
-def foo() -> str:
+def suffixed_bytes_number_to_integer(suffixed_number: str) -> int:
     """
-    This function is provided to demonstrate the doctests system templated in this repository.  If all doctests from the package source directory are removed, the 'check-doctest' recipe in /tests/Makefile will also need to be removed, because pytest reports a failure if no tests are found.
-
-    >>> foo()
-    'x'
+    >>> suffixed_bytes_number_to_integer("1 KB")
+    1024
     """
-    return "x"
+    parts = suffixed_number.split(" ")
+    multiplier = {
+        "KB": 2**10,
+        "MB": 2**20,
+        "GB": 2**30,
+        "TB": 2**40,
+    }[parts[1]]
+    lhs = int(parts[0])
+    return lhs * multiplier

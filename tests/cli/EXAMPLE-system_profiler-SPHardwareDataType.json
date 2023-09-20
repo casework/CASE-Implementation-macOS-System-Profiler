@@ -1,0 +1,10 @@
+{
+    "SPHardwareDataType": [
+        {
+            "_name": "hardware_overview",
+            "machine_model": "MacBookPro4,1",
+            "machine_name": "MacBook Pro",
+            "serial_number": "XXXXXXXXXXX1"
+        }
+    ]
+}
