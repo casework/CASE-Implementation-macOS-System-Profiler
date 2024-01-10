@@ -44,7 +44,7 @@ SPHardwareDataType.ttl: \
   $(top_srcdir)/case_macos_system_profiler/__init__.py \
   $(top_srcdir)/case_macos_system_profiler/cli.py \
   $(top_srcdir)/tests/.venv.done.log
-	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
+	export CDO_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(top_srcdir)/tests/venv/bin/activate \
 	    && case_macos_system_profiler \
 	      --SPHardwareDataType-json $< \

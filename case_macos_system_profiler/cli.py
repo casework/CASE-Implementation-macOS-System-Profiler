@@ -21,9 +21,8 @@ import logging
 import subprocess
 from typing import Any, DefaultDict, Dict, Optional, Set
 
-import case_utils
+import cdo_local_uuid
 from case_utils.inherent_uuid import get_facet_uriref
-from case_utils.local_uuid import local_uuid
 from case_utils.namespace import (
     NS_RDF,
     NS_RDFS,
@@ -32,6 +31,7 @@ from case_utils.namespace import (
     NS_UCO_OBSERVABLE,
     NS_XSD,
 )
+from cdo_local_uuid import local_uuid
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.util import guess_format
 
@@ -291,7 +291,7 @@ def main() -> None:
 
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
-    case_utils.local_uuid.configure()
+    cdo_local_uuid.configure()
 
     system_profile_mapper = SystemProfileMapper(
         kb_prefix=args.kb_prefix,
