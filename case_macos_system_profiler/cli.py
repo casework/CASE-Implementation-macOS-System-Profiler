@@ -73,9 +73,9 @@ class SystemProfileMapper:
         # Value: Dictionary.
         #   Key: Specific class of Facet.
         #   Key: URIRef of Facet for the outer-keyed UcoObject.
-        self._n_uco_object_facet_by_class: DefaultDict[
-            URIRef, Dict[URIRef, URIRef]
-        ] = collections.defaultdict(dict)
+        self._n_uco_object_facet_by_class: DefaultDict[URIRef, Dict[URIRef, URIRef]] = (
+            collections.defaultdict(dict)
+        )
 
         self._n_device: Optional[URIRef] = None
         if n_device is not None:
