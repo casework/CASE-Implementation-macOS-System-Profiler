@@ -276,7 +276,8 @@ def main() -> None:
         help="Prefix IRI to use for knowledge-base individuals.  E.g. with defaults, 'http://example.org/kb/Thing-1' would compact to 'kb:Thing-1'.",
     )
     argument_parser.add_argument(
-        "--output-format", help="Override extension-based format guesser."
+        "--output-format",
+        help="Override extension-based format guesser.  If not provided, and the output file extension is an insufficient hint, JSON-LD will be used.",
     )
     argument_parser.add_argument(
         "--use-deterministic-uuids",
@@ -285,7 +286,7 @@ def main() -> None:
     )
     argument_parser.add_argument(
         "out_graph",
-        help="A self-contained RDF graph file, in the format either requested by --output-format or guessed based on extension.",
+        help="A self-contained RDF graph file, in the format either requested by --output-format or guessed based on extension.  If a guess can't be made and --output-format is not provided, JSON-LD will be used.",
     )
     args = argument_parser.parse_args()
 
@@ -307,7 +308,7 @@ def main() -> None:
         guess_format(args.out_graph)
         if args.output_format is None
         else args.output_format
-    )
+    ) or "json-ld"
 
     system_profile_mapper.graph.serialize(args.out_graph, format=output_format)
 
