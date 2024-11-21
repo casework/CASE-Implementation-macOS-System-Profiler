@@ -14,7 +14,7 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 def suffixed_bytes_number_to_integer(suffixed_number: str) -> int:
