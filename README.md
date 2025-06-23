@@ -1,7 +1,7 @@
 # CASE Implementation: macOS System Profiler
 
 [![Continuous Integration](https://github.com/casework/CASE-Implementation-macOS-System-Profiler/actions/workflows/ci.yml/badge.svg)](https://github.com/casework/CASE-Implementation-macOS-System-Profiler/actions/workflows/ci.yml)
-![CASE Version](https://img.shields.io/badge/CASE%20Version-1.2.0-green)
+![CASE Version](https://img.shields.io/badge/CASE%20Version-1.4.0-green)
 
 
 ## Disclaimer
